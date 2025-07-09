@@ -1,9 +1,12 @@
-﻿/// <summary>
+﻿using System.Diagnostics;
+
+/// <summary>
 /// Maintain a Customer Service Queue.  Allows new customers to be 
 /// added and allows customers to be serviced.
 /// </summary>
 public class CustomerService {
-    public static void Run() {
+    public static void Run()
+    {
         // Example code to see what's in the customer service queue:
         // var cs = new CustomerService(10);
         // Console.WriteLine(cs);
@@ -11,24 +14,46 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Test if the user chooses 0 as maxSize
+        // Expected Result: size = 0, max_size = 10
         Console.WriteLine("Test 1");
 
-        // Defect(s) Found: 
+        // Defect(s) Found: None
 
         Console.WriteLine("=================");
+        var cs = new CustomerService(10);
+        Console.WriteLine(cs);
 
         // Test 2
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: Adding a new customer to the queue
+        // Expected Result: all the inputs displayed and printed at the end
         Console.WriteLine("Test 2");
 
-        // Defect(s) Found: 
+        // Defect(s) Found: Needed a `=` (if (_queue.Count >`=` _maxSize))
 
         Console.WriteLine("=================");
+        // cs = new CustomerService(10);
+        cs.AddNewCustomer();
+        Console.WriteLine(cs);
 
         // Add more Test Cases As Needed Below
+
+        Console.WriteLine("=================");
+        // Test 3
+        // Scenario: Make sure the customer is serviced and removed from the queue.
+        // Expected Result: The customer is added to the queue, then serviced and removed from the queue. Message is displayed reporting no customers in the queue.
+        Console.WriteLine("Test 3");
+
+        // Defect(s) Found: The line `_queue.RemoveAt(0);` needed to be moved to the bottom of the function. Also, needed to add an exception handler in case there were no customers in the queue.
+
+
+        Console.WriteLine("=================");
+        // var cs3 = new CustomerService(10);
+        // cs3.AddNewCustomer();
+        cs.ServeCustomer();
+        Console.WriteLine(cs);
+
+        Console.WriteLine("=================");
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +92,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +113,14 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
+        if (_queue.Count <= 0)
+        {
+            Console.WriteLine("No Customers in the queue");
+            return;
+        }
         var customer = _queue[0];
         Console.WriteLine(customer);
+        _queue.RemoveAt(0);
     }
 
     /// <summary>
