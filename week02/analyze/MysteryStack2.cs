@@ -5,13 +5,13 @@
 
     public static float Run(string text) {
         var stack = new Stack<float>();
-        foreach (var item in text.Split(' ')) {
+        foreach (var item in text.Split(' ')) { // split "5" from "+" from "7"
             if (item == "+" || item == "-" || item == "*" || item == "/") {
                 if (stack.Count < 2)
                     throw new ApplicationException("Invalid Case 1!");
 
-                var op2 = stack.Pop();
-                var op1 = stack.Pop();
+                var op2 = stack.Pop(); // will store last number of the stack inside of a variable
+                var op1 = stack.Pop(); // will store the second to last number of the stack inside of a variable
                 float res;
                 if (item == "+") {
                     res = op1 + op2;
@@ -29,7 +29,7 @@
                     res = op1 / op2;
                 }
 
-                stack.Push(res);
+                stack.Push(res); // storing the result back to the stack
             }
             else if (IsFloat(item)) {
                 stack.Push(float.Parse(item));
