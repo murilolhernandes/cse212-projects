@@ -22,7 +22,17 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var seen = new HashSet<string>();
+        var pairs = new HashSet<string>();
+        foreach (var word in words)
+        {
+            char first = word[0];
+            char second = word[1];
+            if (first != second && seen.Contains($"{second}{first}"))
+                pairs.Add($"{first}{second} & {second}{first}");
+            seen.Add(word);
+        }
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +53,11 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            var degree = fields[3];
+            if (degrees.ContainsKey(degree))
+                degrees[degree] += 1;
+            else
+                degrees[degree] = 1;
         }
 
         return degrees;
@@ -67,7 +82,29 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        var normalizedWord1 = word1.ToLower().Replace(" ", "");
+        var normalizedWord2 = word2.ToLower().Replace(" ", "");
+        var letterCounts = new Dictionary<char, int>();
+        if (normalizedWord1.Length != normalizedWord2.Length)
+            return false;
+
+        foreach (var letter in normalizedWord1)
+        {
+            if (letterCounts.ContainsKey(letter))
+                letterCounts[letter]++;
+            else
+                letterCounts[letter] = 1;
+        }
+
+        foreach (var letter in normalizedWord2)
+        {
+            if (!letterCounts.ContainsKey(letter))
+                return false;
+            letterCounts[letter]--;
+            if (letterCounts[letter] < 0)
+                return false;
+        }
+        return letterCounts.Values.All(count => count == 0);
     }
 
     /// <summary>
