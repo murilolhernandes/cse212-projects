@@ -123,9 +123,9 @@ public static class SetsAndMaps
     /// </summary>
     public static string[] EarthquakeDailySummary()
     {
-        const string uri = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+        const string url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
         using var client = new HttpClient();
-        using var getRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+        using var getRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
         using var jsonStream = client.Send(getRequestMessage).Content.ReadAsStream();
         using var reader = new StreamReader(jsonStream);
         var json = reader.ReadToEnd();
@@ -136,8 +136,8 @@ public static class SetsAndMaps
         // TODO Problem 5:
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
-        // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
+        // 2. Add code below to create a string out each place an earthquake has happened today and its magnitude.
         // 3. Return an array of these string descriptions.
-        return [];
+        return featureCollection.features.Select(f => $"{f.geometry.depth}km of {f.properties.place} - Mag {f.properties.mag}, ").ToArray();
     }
 }
