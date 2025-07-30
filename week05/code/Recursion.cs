@@ -16,9 +16,9 @@ public static class Recursion
     {
         // TODO Start Problem 1
         if (n <= 0)
-        {    
+        {
             return 0;
-        }    
+        }
         return SumSquaresRecursive(n - 1) + n * n;
     }
 
@@ -164,10 +164,34 @@ public static class Recursion
     {
         // If this is the first time running the function, then we need
         // to initialize the currPath list.
-        if (currPath == null) {
+        if (currPath == null)
+        {
             currPath = new List<ValueTuple<int, int>>();
         }
-        
+
+        if (!maze.IsValidMove(currPath, x, y))
+        {
+            return;
+        }
+        else
+        {
+            currPath.Add((x, y));
+        }
+
+        if (!maze.IsEnd(x, y))
+        {
+            SolveMaze(results, maze, x + 1, y, currPath);
+            SolveMaze(results, maze, x - 1, y, currPath);
+            SolveMaze(results, maze, x, y + 1, currPath);
+            SolveMaze(results, maze, x, y - 1, currPath);
+        }
+        else
+        {
+            results.Add(currPath.AsString());
+        }
+
+        currPath.RemoveAt(currPath.Count - 1);
+
         // currPath.Add((1,2)); // Use this syntax to add to the current path
 
         // TODO Start Problem 5
